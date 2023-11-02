@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+</head>
+<body>
+  <style>
+    body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    margin: 20px auto;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    font-size: 36px;
+    text-align: center;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+#result {
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #0074cc;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005da6;
+}
+
+  </style>
+    <h1>Tic-Tac-Toe</h1>
+    <div id="game-board">
+        <div class="cell" onclick="makeMove(0)"></div>
+        <div class="cell" onclick="makeMove(1)"></div>
+        <div class="cell" onclick="makeMove(2)"></div>
+        <div class="cell" onclick="makeMove(3)"></div>
+        <div class="cell" onclick="makeMove(4)"></div>
+        <div class="cell" onclick="makeMove(5)"></div>
+        <div class="cell" onclick="makeMove(6)"></div>
+        <div class="cell" onclick="makeMove(7)"></div>
+        <div class="cell" onclick="makeMove(8)"></div>
+    </div>
+    <div id="result"></div>
+    <button onclick="resetGame()">Neues Spiel</button>
+    <script>let currentPlayer = "X";
+let board = ["", "", "", "", "", "", "", "", ""];
+let gameResult = document.getElementById("result");
+let cells = document.querySelectorAll(".cell");
+
+function makeMove(index) {
+    if (board[index] === "" && !gameOver()) {
+        board[index] = currentPlayer;
+        cells[index].textContent = currentPlayer;
+        if (currentPlayer === "X") {
+            currentPlayer = "O";
+        } else {
+            currentPlayer = "X";
+        }
+    }
+
+    if (checkWinner("X")) {
+        gameResult.textContent = "Spieler X hat gewonnen!";
+    } else if (checkWinner("O")) {
+        gameResult.textContent = "Spieler O hat gewonnen!";
+    } else if (isBoardFull()) {
+        gameResult.textContent = "Unentschieden!";
+    }
+}
+
+function checkWinner(player) {
+    const winCombinations = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
+
+    for (const [a, b, c] of winCombinations) {
+        if (board[a] === player && board[b] === player && board[c] === player) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function isBoardFull() {
+    return board.every(cell => cell !== "");
+}
+
+function gameOver() {
+    return gameResult.textContent !== "";
+}
+
+function resetGame() {
+    currentPlayer = "X";
+    board = ["", "", "", "", "", "", "", "", ""];
+    gameResult.textContent = "";
+    cells.forEach(cell => cell.textContent = "");
+}
+</script>
+</body>
+</html>
